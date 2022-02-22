@@ -70,13 +70,94 @@ public class VectorTest {
 		//  ==> '삭제할데이터'를 찾아서 삭제한다.
 		//  ==> '삭제할데이터'가 여러개이면 앞에서부터 삭제된다.
 		//  ==> 반환값 : 삭제성공(true), 삭제실패(false)
+		//  ==> '삭제할 데이터'가 '정수형'이거나 'char형'일 경우에는 반드시 객체로 변환하여 사용해야 한다
 		v1.remove("CCCC");
 		System.out.println("삭제후 v1 => " + v1);
 		
 		//v1.remove(123); // 123이 index로 인식되어 처리된다.
 		v1.remove(new Integer(123));
 		System.out.println("삭제후 v1 => " + v1);
-		System.out.println();
+		
+		//v1.remove('a');  //Array index out of range: 97
+		v1.remove(new Character('a'));
+		System.out.println("삭제후 v1 => " + v1);
+
+		v1.remove(true);
+		v1.remove(3.14);
+		System.out.println("삭제후 v1 => " + v1);
+		System.out.println("--------------------------------------------");
+		
+		// --------------------------------------------
+		/*
+		- 제네릭타입(Generic Type) ==> 클래스 내부에서 사용할 데이터 타입을 외부에서 지정하는 기법으로 
+		    객체를 생성할 때 < > 괄호안에 그 객체의 내부에서 사용할 데이터의 타입을 지정해 주는 것을 말한다.
+		    이런식으로 객체를 생성하면 제네릭 타입으로 지정한 종류의 데이터 이외의 다른 데이터는 저장할 수 없다.
+		    제네릭 타입으로 지정할 수 있는 데이터 타입은 '클래스형'이어야 한다.
+		    (int는 Integer, boolean은 Boolean, char는 Character등으로 대체해서 기술해야 한다.)
+		   
+		    제네릭 타입으로 생성하게 되면 데이터를 꺼내올 때 별도의 형변환이 필요없다. 
+		 */
+		
+		// String을 저장할 수 있는 Vector 객체 생성
+		Vector<String> v2 = new Vector<String>();
+		
+		// int형을 저장할 수 있는 Vector객체 생성
+		Vector<Integer> v3 = new Vector<>();
+		
+		v2.add("안녕하세요");
+		//v2.add(100);  // 오류 : 다른 종류의 데이터를 저장할 수 없다.
+		String temp4 = v2.get(0);
+		
+		Vector<Vector> vv = new Vector<Vector>();
+		Vector<Vector<Vector>> vvv = new Vector<Vector<Vector>>();
+		System.out.println("--------------------------------------------");
+		// --------------------------------------------
+		
+		// 모든 데이터 삭제하기 : clear()
+		v2.clear();
+		
+		System.out.println("v2의 size : " + v2.size());
+		
+		v2.add("AAAA");
+		v2.add("BBBB");
+		v2.add("CCCC");
+		v2.add("DDDD");
+		v2.add("EEEE");
+		
+		Vector<String> v4 = new Vector<String>();
+		v4.add("BBBB");
+		v4.add("EEEE");
+		
+		System.out.println("v2 => " + v2);
+		System.out.println("v4 => " + v4);
+		
+		// 데이터 삭제하기3 : removeAll(Collection객체)
+		//  ==> 'Collection객체'가 가지고 있는 데이터를 모두 삭제한다.
+		//  ==> 반환값 : 삭제성공(true), 삭제실패(false)
+		v2.removeAll(v4);
+		System.out.println("v2 => " + v2);
+		System.out.println("--------------------------------------------");
+		
+		v2.clear();
+		v2.add("AAAA");
+		v2.add("BBBB");
+		v2.add("CCCC");
+		v2.add("DDDD");
+		v2.add("EEEE");
+		
+		// Vector의 데이터를 순서대로 모두 가져와 처리하기
+		// 이 때 반복문을 사용한다.(주로 for문 사용)
+		for(int j = 0; j < v2.size(); j++) {
+			System.out.println(j + "번째 자료 : " + v2.get(j));
+		}
+		System.out.println("--------------------------------------------");
+		
+		// 향상된 for문
+		// for(자료형 변수 : 꺼내올 대상객체)
+		for(String str : v2) {
+			System.out.println(str);
+		}
+		
 	}
 
 }
