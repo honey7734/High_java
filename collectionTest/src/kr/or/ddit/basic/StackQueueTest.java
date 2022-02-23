@@ -83,6 +83,9 @@ public class StackQueueTest {
 		System.out.println("삭제없이 꺼내온 값 : " + queue.peek());
 		System.out.println("현재 queue : " + queue);
 		
+		//스택은 콜스택 외에도 이전작업으로 돌아가기(ctrl+z), 웹 브라우저에서 뒤로가기 앞으로가기 기능등 어떤 기록들을 남긴후 역순으로 처리하고 싶을때 사용된다
+		//큐는 순서대로 프린트하기 등 명령을 입력받은 순서대로 처리해야하는 경우에 사용된다.
+		
 	}
 
 }
