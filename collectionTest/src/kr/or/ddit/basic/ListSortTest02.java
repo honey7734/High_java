@@ -2,6 +2,9 @@ package kr.or.ddit.basic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+
+// 숙제) 회원번호의 내림차순으로 정렬될 수 있는 외부 정렬 기준을 작성하시오
 
 public class ListSortTest02 {
 
@@ -22,6 +25,20 @@ public class ListSortTest02 {
 		
 		Collections.sort(memList);
 
+		System.out.println("정렬후...");
+		for(Member mem : memList) {
+			System.out.println(mem);
+		}
+		
+		//숙제
+		Collections.shuffle(memList);
+		System.out.println("섞은 후 !");
+		for(Member mem : memList) {
+			System.out.println(mem);
+		}
+		
+		Collections.sort(memList, new numDesc());
+		
 		System.out.println("정렬후...");
 		for(Member mem : memList) {
 			System.out.println(mem);
@@ -90,4 +107,21 @@ class Member implements Comparable<Member>{
 	}
 	
 	
+}
+
+class numDesc implements Comparator<Member>{
+
+	@Override
+	public int compare(Member mem1, Member mem2) {
+		if(mem1.getNum() > mem2.getNum()) {
+			return -1;
+		}else if(mem1.getNum() < mem2.getNum()) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+
+	
+
 }
