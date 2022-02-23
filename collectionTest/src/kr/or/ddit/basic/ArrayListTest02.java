@@ -19,15 +19,18 @@ public class ArrayListTest02 {
 			nameList.add(sc.nextLine());
 		}
 		System.out.println(nameList);
+		
 		//방법1
 		for(int i = 0; i < nameList.size(); i++) {
 			if(nameList.get(i).charAt(0) == '김') System.out.println(nameList.get(i));
 		}
+
 		//방법2
 		for(int i = 0; i < nameList.size(); i++) {
 			char[] nameChar = nameList.get(i).toCharArray();
 			if(nameChar[0] == '김') System.out.println(nameList.get(i));
 		}
+		
 		//방법3
 		for(int i = 0; i < nameList.size(); i++) {
 			ArrayList<Character> nameChar = new ArrayList<Character>();
@@ -35,11 +38,30 @@ public class ArrayListTest02 {
 			if(nameChar.get(0) == '김') System.out.println(nameList.get(i));
 			//if(nameChar.contains('김') && nameChar.get(0) == '김') System.out.println(nameList.get(i));
 		}
+		
 		//방법4
 		for(int i = 0; i < nameList.size(); i++) {
 			ArrayList<Character> nameChar = new ArrayList<Character>();
 			for(int j = 0; j < nameList.get(i).length(); j++) nameChar.add(nameList.get(i).toCharArray()[j]);
 			if(nameChar.indexOf('김') == 0 ) System.out.println(nameList.get(i));
+		}
+		
+		//선생님 방법
+		//1) substring을 사용
+		for(int i = 0; i < nameList.size(); i++) {
+			if(nameList.get(i).substring(0,1).equals("김")) System.out.println(nameList.get(i));
+		}
+		//2) charAt을 사용
+		for(int i = 0; i < nameList.size(); i++) {
+			if(nameList.get(i).charAt(0) == '김') System.out.println(nameList.get(i));
+		}
+		//3) indexOf를 사용
+		for(int i = 0; i < nameList.size(); i++) {
+			if(nameList.get(i).indexOf(0) == '김') System.out.println(nameList.get(i));
+		}
+		//4) startsWith (시작글자를 찾는 메소드)를 사용   <==> endsWith
+		for(int i = 0; i < nameList.size(); i++) {
+			if(nameList.get(i).startsWith("김")) System.out.println(nameList.get(i));
 		}
 		
 	}
