@@ -113,6 +113,8 @@ class numDesc implements Comparator<Member>{
 
 	@Override
 	public int compare(Member mem1, Member mem2) {
+		
+		//방법1
 		if(mem1.getNum() > mem2.getNum()) {
 			return -1;
 		}else if(mem1.getNum() < mem2.getNum()) {
@@ -120,6 +122,10 @@ class numDesc implements Comparator<Member>{
 		}else {
 			return 0;
 		}
+		
+		//방법2
+		//return ((Integer)mem1.getNum()).compareTo((Integer)mem2.getNum()) * -1;
+		
 	}
 
 	
