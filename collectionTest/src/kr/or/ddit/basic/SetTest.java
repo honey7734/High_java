@@ -1,5 +1,6 @@
 package kr.or.ddit.basic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -97,6 +98,18 @@ public class SetTest {
 			testSet.add(rnd);
 		}
 		
-		System.out.println("당첨자 번호 : " + testSet);
+		//System.out.println("당첨자 번호 : " + testSet);
+		for(int num : testSet) {
+			System.out.println(num);
+		}
+		System.out.println();
+		
+		// Set유형의 자료를 List형 자료로 변환하기
+		ArrayList<Integer> testList = new ArrayList<Integer>(testSet);
+		for(int i = 0; i < testList.size(); i++) {
+			System.out.println(i + " : " + testList.get(i));
+		}
+		
+		//Set은 주로 중복을 제거하는 용도로 많이 사용한다
 	}
 }
