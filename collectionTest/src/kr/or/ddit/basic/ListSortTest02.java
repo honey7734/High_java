@@ -123,8 +123,11 @@ class numDesc implements Comparator<Member>{
 			return 0;
 		}
 		
-		//방법2
-		//return ((Integer)mem1.getNum()).compareTo((Integer)mem2.getNum()) * -1;
+		// Wrapper클래스를 이용하는 방법1
+		//return new Integer(mem1.getNum()).compareTo(mem2.getNum()) * -1;
+		
+		// Wrapper 클래스를 이용하는 방법2 
+		//return Integer.compare(mem1.getNum(),mem2.getNum()) * -1;
 		
 	}
 
