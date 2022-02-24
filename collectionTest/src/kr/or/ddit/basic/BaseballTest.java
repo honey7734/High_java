@@ -53,11 +53,9 @@ public class BaseballTest {
 			count++;
 			
 			System.out.print("숫자 입력 > ");
-			int input = Integer.parseInt(sc.nextLine());
-			
-			int i1 = input/100;    
-			int i2 = (input/10)%10;
-			int i3 = input%10; 
+			int i1 = Integer.parseInt(sc.next());
+			int i2 = Integer.parseInt(sc.next());
+			int i3 = Integer.parseInt(sc.next());
 			
 			if(i1 == numList.get(0)) s++;
 			if(i2 == numList.get(1)) s++;
