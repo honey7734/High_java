@@ -83,8 +83,14 @@ public class EqualsHashCodeTest {
 		/*
 		 *  - equals() ==> 두 객체의 내용이 같은지 검사하는 메서드
 		 *  - hashCode() ==> 두 객체의 동일성을 검사하는 메서드
+		 *  
+		 *  HashSet, HashTable, HashMap과 같이 Hash로 시작하는 컬렉션 객체들은 객체의 의미상
+		 *  동일성을 비교하기 위해서 equals()와 hashCode()메서드를 호출해서 비교한다.
+		 *  그러므로, 객체가 같은지 여부를 결정하려면 equals()메서드 뿐만 아니라 hashCode()메서드도 재정의 해야한다 
+		 *  
 		 */
 		
+		// 참조값을 기반으로 해쉬코드 값을 만든다
 		
 	}
 
