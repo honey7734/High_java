@@ -164,7 +164,8 @@ public class PhoneBookTest {
 		System.out.print("전화번호 >> ");
 		String tel = scan.next();
 		System.out.print("주소 >> ");
-		String addr = scan.next();
+		scan.nextLine();  // 입력버퍼를 비우기
+		String addr = scan.nextLine();
 		
 //		Phone p = new Phone(name, tel, addr);
 //		phoneBook.put(name, p);
@@ -191,7 +192,19 @@ public class PhoneBookTest {
 		String tel = scan.next();
 		
 		System.out.print("새로운 주소 >> ");
-		String addr = scan.next();
+		scan.nextLine();  // 입력버퍼를 비우기
+//		String addr = scan.next();
+		String addr = scan.nextLine();
+		
+		/*
+		 Scanner 객체의 입력 메서드의 특징
+		 - next(), nextInt(), nextDouble(),...등 
+		   ==> 사이띄기, Tab키, Enter키를 구분 문자로 분리해서 분리된 자료만 읽어간다
+		 - nextLine()
+		   ==> 한 줄 단위로 입력한다. 즉, 자료를 입력하고 Enter키를 누르면 Enter키까지 읽어간다.
+		 - Scanner는 입력한 값이 입력버퍼에 먼저 저장된 후에 차례로 꺼내와서 처리된다.
+		 */
+		
 		
 		phoneBook.put(name, new Phone(name, tel, addr));
 		System.out.println("'" + name + "'전화번호 정보 수정 완료!!");
