@@ -1,5 +1,8 @@
 package kr.or.ddit.basic;
 
+import java.util.HashSet;
+import java.util.Objects;
+
 public class EqualsHashCodeTest {
 
 	public static void main(String[] args) {
@@ -9,7 +12,7 @@ public class EqualsHashCodeTest {
 		
 		Person p2 = new Person();
 		p2.setNum(1);
-		p2.setName("홍길등");
+		p2.setName("홍길동");
 		
 		Person p3 = p1;
 		
@@ -59,10 +62,28 @@ public class EqualsHashCodeTest {
 		 */
 		
 		System.out.println(p1.equals(p2));  //false
-		System.out.println(p1.getName().equals(p2.getName()));  //false
 		//equals라는 메서드가 정의되어있지않은데 어떻게 사용할 수 있을까 ?
 		//class는 상속을 아무것도 안받은 것처럼 되어있지만 사실 Object class를 상속받고 있다 equals라는 메서드는 Object에 이미 정의되어있는 메서드이다.
 		//equals는 ==으로 비교되어 있는데 String 은 equals를 오버라이딩해서 true가 되는 것!
+		
+		HashSet<Person> testSet = new HashSet<Person>();
+		
+		testSet.add(p1);
+		testSet.add(p3);
+		
+		System.out.println("Set의 size : " + testSet.size());  // 1개
+		
+		testSet.add(p2);
+		System.out.println("Set의 size : " + testSet.size());  // 2개  --> 1개
+		
+		System.out.println("p1 : " + p1.hashCode());
+		System.out.println("p2 : " + p2.hashCode());
+		System.out.println("p3 : " + p3.hashCode());
+		
+		/*
+		 *  - equals() ==> 두 객체의 내용이 같은지 검사하는 메서드
+		 *  - hashCode() ==> 두 객체의 동일성을 검사하는 메서드
+		 */
 		
 		
 	}
@@ -86,5 +107,56 @@ class Person{
 		this.name = name;
 	}
 	
+
 	
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(this == obj) {  // 참조값(주소값)이 같은지 검사
+//			return true;
+//		}
+//		
+//		if(obj == null) {
+//			return false;
+//		}
+//		
+//		// 같은 유형의 클래스인지 검사
+//		if(this.getClass() != obj.getClass()) {
+//			return false;
+//		}
+//		
+//		// 매개변수값을 현재 객체 유형으로 형변환 한다.
+//		Person that = (Person) obj;
+//		
+//		if(this.name == null && that.name != null) {
+//			return false;
+//		}
+//		
+//		if(this.num == that.num && this.name == that.name) {
+//			return true;
+//		}
+//		
+//		if(this.num == that.num && this.name.equals(that.name)) {
+//			return true;
+//		}
+//		
+//		return false;
+//	}
+	
+	//alt+shift+s > Generate hashCode()&equals()
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, num);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		return Objects.equals(name, other.name) && num == other.num;
+	}
 }
