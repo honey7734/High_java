@@ -21,7 +21,7 @@ public class ArgsTest {
 	//   - 가변형 인수에 사용되는 매개변수는 메서드 안에서 배열로 처리된다
 	//   - 가변형 인수는 한가지 자료형만 사용할 수 있다.
 	
-	public int sumArg(int...data) {
+	public int sumArg(int...data) { 
 		int sum = 0;
 
 		for(int i = 0; i < data.length ; i++) {
@@ -29,6 +29,17 @@ public class ArgsTest {
 		}
 		
 		return sum;
+	}
+	
+	//메서드 하나당 가변형 인수는 1개만 쓸수 있다
+	// 가변형 인수와 일반적인 인수를 같이 사용할 경우에는 가변형 인수를 제일 뒤쪽에 배치해야 한다.
+	public String sumArg2(String name, int...data) {
+		int sum = 0;
+		for(int i = 0; i < data.length; i++) {
+			sum += data[i];
+		}
+		
+		return name + "씨 총점 : " + sum ;
 	}
 	public static void main(String[] args) {
 		ArgsTest test = new ArgsTest();
@@ -40,12 +51,15 @@ public class ArgsTest {
 		nums2 = new int[] {100,200,300};
 		
 		System.out.println(test.sumArr(nums));
+		System.out.println(test.sumArr(nums2));
 		System.out.println(test.sumArr(new int[] {1,2,3,4,5}));
 		System.out.println("---------------------------");
 		
 		System.out.println(test.sumArg(100,200,300));
 		System.out.println(test.sumArg(1,2,3,4,5));
+		System.out.println("---------------------------");
 		
+		System.out.println(test.sumArg2("홍길동", 20,30,40));
 		
 	}
 
