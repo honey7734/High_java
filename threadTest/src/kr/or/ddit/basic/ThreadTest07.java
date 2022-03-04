@@ -25,68 +25,55 @@ import javax.swing.JOptionPane;
     결 과 : 당신이 이겼습니다.
  */
 public class ThreadTest07 {
+	public static boolean inputCheck = false;
 	
 	public static void main(String[] args) {
 		Count th = new Count();
-		Thread th2 = new Thread(new InputData());
-		th.start();
-		th2.start();
 		
-	}
-
-}
-class InputData implements Runnable{
-	public static boolean inputCheck = false;
-	@Override
-	public void run() {
+		// 난수를 이용해서 컴퓨터의 가위 바위 보 정하기
+		String[] data = {"가위","바위","보"};
+		int index = (int)Math.random() * 3;  // 0~2사이의 난수만들
+		String computer = data[index];
+		
+		th.start(); // 카운트 다운 시작...
+		
 		String player = JOptionPane.showInputDialog("가위, 바위, 보를 입력 하세요");
 		inputCheck = true;
-		int rnd = (int)Math.random() * 3;
-		String computer = rnd == 0 ? "가위" : rnd == 1 ? "바위" : "보";   
-		System.out.println("- 결 과 -");
+		
+		// 결과 판정하기
+		String result = "";
+		if(computer.equals(player)) {
+			result = "비겼습니다.";
+		}else if(computer.equals("가위") && player.equals("보") 
+			  || computer.equals("바위") && player.equals("가위")
+			  || computer.equals("보") && player.equals("바위")) {
+			result = "당신이 졌습니다";
+		}else {
+			result = "당신이 이겼습니다.";
+		}
+		
+		// 결과 출력하기
+		System.out.println("   - 결 과 -");
 		System.out.println("컴퓨터 : " + computer);
 		System.out.println("당 신 : " + player);
-		System.out.print  ("결 과 : ");
-		switch (player) {
-		case "가위":
-			switch (computer) {
-			case "가위": System.out.println("비겼습니다."); break;
-			case "바위": System.out.println("당신이 이겼습니다."); break;
-			case "보": System.out.println("당신이 졌습니다."); break;
-			}
-			break;
-		case "바위":
-			switch (computer) {
-			case "가위": System.out.println("당신이 이겼습니다."); break;
-			case "바위": System.out.println("비겼습니다."); break;
-			case "보": System.out.println("당신이 졌습니다."); break;
-			}
-			break;
-		case "보":
-			switch (computer) {
-			case "가위": System.out.println("당신이 졌습니다."); break;
-			case "바위": System.out.println("당신이 이겼습니다."); break;
-			case "보": System.out.println("비겼습니다."); break;
-			}
-			break;
-		}
+		System.out.println  ("결 과 : " + result);
+
 	}
-	
+
 }
 class Count extends Thread{
 	@Override
 	public void run() {
+		System.out.println("카운트다운을 시작합니다...");
 		for(int i = 5; i >= 1; i--) {
-			
+			if(ThreadTest07.inputCheck) {
+				return;
+			}
 			System.out.println(i);
-			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {}
 
-			if(InputData.inputCheck) {
-				return;
-			}
 		}
 		System.out.println("- 결 과 -");
 		System.out.println("시간초과로 당신이 졌습니다.");
