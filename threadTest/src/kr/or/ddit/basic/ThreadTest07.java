@@ -37,7 +37,13 @@ public class ThreadTest07 {
 		
 		th.start(); // 카운트 다운 시작...
 		
-		String player = JOptionPane.showInputDialog("가위, 바위, 보를 입력 하세요");
+		
+		String player = null;
+		do {
+			player = JOptionPane.showInputDialog("가위, 바위, 보를 입력 하세요");
+		}while(!(player.equals("가위") || player.equals("바위") || player.equals("보")));
+//	    }while(!player.equals("가위") && !player.equals("바위") && !player.equals("보"));
+		
 		inputCheck = true;
 		
 		// 결과 판정하기
