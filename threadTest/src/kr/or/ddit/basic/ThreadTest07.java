@@ -77,15 +77,16 @@ class Count extends Thread{
 	@Override
 	public void run() {
 		for(int i = 5; i >= 1; i--) {
-			if(InputData.inputCheck) {
-				return;
-			}
 			
 			System.out.println(i);
 			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {}
+
+			if(InputData.inputCheck) {
+				return;
+			}
 		}
 		System.out.println("- 결 과 -");
 		System.out.println("시간초과로 당신이 졌습니다.");
