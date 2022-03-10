@@ -1,7 +1,6 @@
 package kr.or.ddit.basic.stream;
 
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
