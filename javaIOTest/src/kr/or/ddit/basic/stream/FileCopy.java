@@ -5,6 +5,8 @@ package kr.or.ddit.basic.stream;
  		 '펭귄_복사본.jpg'파일로 복사하는 프로그램을 작성하시오
  */
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,23 +28,30 @@ public class FileCopy {
 		try {
 			// 복사할 파일 스트림 객체 생성
 			FileInputStream fin = new FileInputStream(img);
+			BufferedInputStream bin = new BufferedInputStream(fin);
 			
 			// 복사될 파일 스트림 객체 생성
 			FileOutputStream fout = new FileOutputStream("d:/d_other/펭귄_복사본.jpg");
-		
+			BufferedOutputStream bout = new BufferedOutputStream(fout);
+			
+			System.out.println("복사 시작...");
 		int data = 0; 
-		// fis.read()가 -1 이면 파일을 다 읽은것
-		while((data = fin.read()) != -1) {
-		    fout.write(data);
-		}
-		fout.flush();
+//		// fis.read()가 -1 이면 파일을 다 읽은것
+//		while((data = fin.read()) != -1) {
+//		    fout.write(data);
+//		}
+//		fout.flush();
 		
-		System.out.println("복사 작업 끝...");
+		while ((data = bin.read())!= -1) {
+			bout.write(data);
+		}
+		bout.flush();
 		
 		//스트림 닫기
-		fin.close();
-		fout.close();
+		bin.close();
+		bout.close();
 		
+		System.out.println("복사 작업 끝...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
