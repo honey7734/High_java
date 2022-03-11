@@ -56,4 +56,9 @@ public class FileCopy {
 			e.printStackTrace();
 		}
 	}
+	
+	// 파일을 선택하여 선택한 파일을 반환하는 메서드
+	public File getSelectFile(String option) {
+		return null;
+	}
 }
