@@ -5,6 +5,7 @@ package kr.or.ddit.basic.stream;
  		 '펭귄_복사본.jpg'파일로 복사하는 프로그램을 작성하시오
  */
 
+import java.awt.Panel;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -12,26 +13,45 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
+
 public class FileCopy {
 
 	public static void main(String[] args) {
-			
-		File img = new File("d:/d_other/펭귄.jpg");
+		FileCopy fc = new FileCopy();
 		
-		if(!img.exists()) {
-			System.out.println(img.getName() + "파일이 없습니다");
-			System.out.println("복사작업을 중단합니다.");
+//		File file = new File("d:/d_other/펭귄.jpg");
+		File file = fc.getSelectFile("OPEN");
+		
+		if(file == null) {
+			System.out.println("선택된 원본 파일이 없습니다.");
+			System.out.println("복사작업 끝...");
 			return;
 		}
+		
+		
+		File targetFile = fc.getSelectFile("SAVE");
+		if(targetFile == null) {
+			System.out.println("선택된 대상 파일이 없습니다.");
+			System.out.println("복사작업 끝...");
+			return;
+		}
+		
+//		if(!file.exists()) {
+//			System.out.println(file.getName() + "파일이 없습니다");
+//			System.out.println("복사작업을 중단합니다.");
+//			return;
+//		}
 		
 
 		try {
 			// 복사할 파일 스트림 객체 생성
-			FileInputStream fin = new FileInputStream(img);
+			FileInputStream fin = new FileInputStream(file);
 			BufferedInputStream bin = new BufferedInputStream(fin);
 			
 			// 복사될 파일 스트림 객체 생성
-			FileOutputStream fout = new FileOutputStream("d:/d_other/펭귄_복사본.jpg");
+//			FileOutputStream fout = new FileOutputStream("d:/d_other/펭귄_복사본.jpg");
+			FileOutputStream fout = new FileOutputStream(targetFile);
 			BufferedOutputStream bout = new BufferedOutputStream(fout);
 			
 			System.out.println("복사 시작...");
@@ -59,6 +79,22 @@ public class FileCopy {
 	
 	// 파일을 선택하여 선택한 파일을 반환하는 메서드
 	public File getSelectFile(String option) {
-		return null;
+		JFileChooser chooser = new JFileChooser();
+		chooser.setAcceptAllFileFilterUsed(true);
+		chooser.setCurrentDirectory(new File("d:/d_other"));
+		
+		int result;
+		if("OPEN".equals(option)) {
+			result = chooser.showOpenDialog(new Panel());
+		}else if("SAVE".equals(option)) {
+			result = chooser.showSaveDialog(new Panel());
+		}else {
+			System.out.println("option이 잘못되었습니다");
+			return null;
+		}
+		
+		File selectedFile = chooser.getSelectedFile();
+		System.out.println("선택한 파일 : " + selectedFile.getAbsolutePath());
+		return selectedFile;
 	}
 }
