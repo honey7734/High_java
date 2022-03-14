@@ -50,11 +50,23 @@ import java.util.Set;
 public class PhoneBookTest {
 	private Scanner scan;
 	private HashMap<String, Phone> phoneBook;
+	private String fileName = "d:/d_other/phoneData.dat";
+	
+	// 데이터가 변경되었는지 여부를 나타내는 변수
+	// 데이터가 변경되면 이 값이 true;가 된다.
+	private boolean dataChange;
 	
 	// 생성자
 	public PhoneBookTest() {
+		// 파일내용을 읽어와 Map에 저장한다
+		phoneBook = load();
+		
+		// 파일이 없거나 잘못되었을 때...
+		if(phoneBook == null) {
+			phoneBook = new HashMap<String, Phone>();
+		}
 		scan = new Scanner(System.in);
-		phoneBook = new HashMap<String, Phone>();
+		
 	}
 	
 	
@@ -65,8 +77,6 @@ public class PhoneBookTest {
 	// 프로그램을 시작하는 메서드
 	private void start() {
 		
-		//프로그램이 시작될 때 저장된 파일이 있으면 그 데이터를 읽어와 Map에 저장
-		readBook();
 		
 		System.out.println();
 		System.out.println("***********************************************");
@@ -91,7 +101,8 @@ public class PhoneBookTest {
 			case 6:
 				save(); break;
 			case 0:
-				exit();
+				if(dataChange == true) save();
+				System.out.println("프로그램을 종료합니다");
 				return;
 			default : 
 				System.out.println("작업 번호를 잘못 입력했습니다.");
@@ -103,74 +114,66 @@ public class PhoneBookTest {
 
 
 
-	private void exit() {
-		System.out.println("프로그램을 종료합니다.");
-		File file = new File("d:/d_other/phoneObj.bin");
-		HashMap<String, Phone> outPhoneBook = new HashMap<String, Phone>();
+	
+	// 저장된 전화번호 정보 파일을 읽어오는 메서드
+	// 반환값 : 파일에서 읽어온 데이터 (Map객체)
+	private HashMap<String, Phone> load(){
+		// 읽어온 데이터가 저장될 변수 선언
+		HashMap<String, Phone> pMap = null;
 		
-		if(!file.exists()) return;
-		ObjectInputStream oin = null;
-		try {
-			oin = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-			Object obj; 
-			while ((obj=oin.readObject())!=null) {
-				Phone phone = (Phone) obj;
-				outPhoneBook.put(phone.getName(),phone);
-			}
-			oin.close();
-			
-		} catch (Exception e) {}
-		if(outPhoneBook.equals(phoneBook)) {
-			System.out.println("변경사항이 없습니다");
-			return;
+		File file = new File(fileName);
+		if(!file.exists()) { // 저장된 파일이 없으면..
+			return null;
 		}
-		save();
-	}
-
-
-	private void readBook() {
-		File file = new File("d:/d_other/phoneObj.bin");
-		if(!file.exists()) return;
-
-		ObjectInputStream oin = null;
+		
+		ObjectInputStream ois = null;
 		try {
+			ois = new ObjectInputStream(
+				  new BufferedInputStream(
+				  new FileInputStream(file)));
 			
-			oin = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-			
-			Object obj; 
-			while ((obj=oin.readObject())!=null) {
-				Phone phone = (Phone) obj;
-				phoneBook.put(phone.getName(),phone);
-			}
-			
-		} catch (EOFException e) {
+			// 파일 내용을 읽어서 변수에 저장한다.
+			pMap = (HashMap<String, Phone>)ois.readObject();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();  //EOFException 발생 : 파일의 끝에 도달했을때 발생
-		} finally {
-			if(oin != null) try { oin.close(); } catch (IOException e) { }
+			//e.printStackTrace();
+			return null;
+		}finally {
+			// 사용했던 스트림 닫기
+			if(ois != null)
+				try { ois.close(); } catch (IOException e2) {}
 		}
+		
+		return pMap;
 	}
 
-
+// 전화번호 정보를 파일로 저장하는 메서드
 	private void save() {
+		ObjectOutputStream oos = null;
 		try {
-			FileOutputStream fout = new FileOutputStream("d:/d_other/phoneObj.bin");
-			BufferedOutputStream bout = new BufferedOutputStream(fout);
-			ObjectOutputStream oout = new ObjectOutputStream(bout);
+			// 객체 출력용 스트림 객체
+			oos = new ObjectOutputStream(
+			      new BufferedOutputStream(
+				  new FileOutputStream(fileName)));
 			
-			for(String phoneName : phoneBook.keySet()) {
-				oout.writeObject(phoneBook.get(phoneName));
-			}
+			// Map객체를 파일로 저장한다.
+			oos.writeObject(phoneBook);
 			
-			oout.close(); 
+			System.out.println("저장이 완료되었습니다.");
+			dataChange = false;
+			
 		} catch (IOException e) {
+			System.out.println("저장실패");
 			e.printStackTrace();
+		} finally {
+			// 사용했던 스트림 객체 닫기
+			if(oos != null) 
+				try { oos.close(); } catch (IOException e2) {}
 		}
+	
+	
 	}
 
 
@@ -201,6 +204,7 @@ public class PhoneBookTest {
 		if(phoneBook.containsKey(name)) {
 			System.out.println("'" + name + "'은 이미 등록된 사람입니다.");
 			return;
+		
 		}
 		
 		System.out.print("전화번호 >> ");
@@ -214,7 +218,7 @@ public class PhoneBookTest {
 		
 		phoneBook.put(name, new Phone(name, tel, addr));
 		System.out.println(name + "씨 전화번호 등록 완료!!!");
-		
+		dataChange = true; 
 	}
 	
 	// 전화번호 정보를 수정하는 메서드
@@ -250,7 +254,7 @@ public class PhoneBookTest {
 		
 		phoneBook.put(name, new Phone(name, tel, addr));
 		System.out.println("'" + name + "'전화번호 정보 수정 완료!!");
-		
+		dataChange = true;
 	}
 	
 	// 전화번호 정보를 삭제하는 메서드
@@ -269,6 +273,7 @@ public class PhoneBookTest {
 		phoneBook.remove(name);
 		
 		System.out.println("'" + name + "'전화번호 정보 삭제 완료!!");
+		dataChange = true;
 	}
 	
 	// 전화번호 정보를 검색하는 메서드
