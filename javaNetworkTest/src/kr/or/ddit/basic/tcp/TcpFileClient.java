@@ -35,7 +35,7 @@ public class TcpFileClient {
 			int len = 0;
 			
 			// 파일 내용을 읽어와 소켓으로 출력한다.
-			while((len = bis.read()) > 0) {
+			while((len = bis.read(temp)) > 0) {
 				bos.write(temp, 0, len);
 			}
 			bos.flush();
