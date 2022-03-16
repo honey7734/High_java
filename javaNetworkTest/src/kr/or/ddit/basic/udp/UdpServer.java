@@ -77,7 +77,7 @@ public class UdpServer {
 				// 상대방에게 메시지 보내기 (수신받은 데이터 그대로 송신하기)
 				
 				// 송신할 메시지를 byte배열로 변환한다.
-				byte[] sendMsg = msg.getBytes("uft-8");
+				byte[] sendMsg = msg.getBytes("utf-8");
 				
 				// 송신할 패킷객체 생성
 				// 		==> 전송할 데이터가 저장된 byte배열, 전송할 자료의 길이(배열의 길이), 상대방주소정보, 포트번호를 지정하여 
@@ -89,7 +89,9 @@ public class UdpServer {
 				socket.send(outpacket);
 				System.out.println("송신완료...");
 				System.out.println();
+				
 			}
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
