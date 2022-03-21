@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import kr.or.ddit.util.DBUtill;
+import kr.or.ddit.util.DBUtill2;
 
 /*
  	회원을 관리하는 프로그램을 작성하시오.
@@ -155,7 +156,7 @@ public class JdbcTest06 {
 		System.out.println(" ID  비밀번호  이름   전화번호  주소");
 		System.out.println("-----------------------------");
 		try {
-			conn = DBUtill.getConnection();
+			conn = DBUtill2.getConnection();
 			String sql = "select * from mymember";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
