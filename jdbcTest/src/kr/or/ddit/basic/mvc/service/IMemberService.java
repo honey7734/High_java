@@ -47,4 +47,14 @@ public interface IMemberService {
 	 */
 	public int getMemberCount(String memId);
 	
+	/**
+	 * 회원ID와 해당 회원의 데이터를 변경하기 위한 데이터를 입력받아
+	 * DB에 변경할 수 있도록 하는 메서드 
+	 * @param memId 변경할 회원 ID
+	 * @param updateField 변경할 데이터 필드
+	 * @param updateData 변경할 데이터
+	 * @return 성공 : 1, 실패 : 0
+	 */
+	public int updateMember2(String memId, String updateField, String updateData);
+	
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.ddit.basic.mvc.vo.MemberVO;
@@ -30,20 +31,64 @@ public class MemberDaoImpl implements IMemberDao {
 
 	@Override
 	public int deleteMember(Connection conn, String memId) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "delete from mymember where mem_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, memId);
+		
+		int cnt = pstmt.executeUpdate();
+		
+		if(pstmt != null) pstmt.close();
+		
+		return cnt;
 	}
 
 	@Override
 	public int updateMember(Connection conn, MemberVO memVo) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "update mymember set "
+				   + "MEM_NAME = ?, "
+				   + "MEM_PASS = ?, "
+				   + "MEM_TEL = ?, "
+				   + "MEM_ADDR = ?"
+				   + "where MEM_ID = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, memVo.getMem_name());
+		pstmt.setString(2, memVo.getMem_pass());
+		pstmt.setString(3, memVo.getMem_tel());
+		pstmt.setString(4, memVo.getMem_addr());
+		pstmt.setString(5, memVo.getMem_id());
+		
+		int cnt = pstmt.executeUpdate();
+		
+		if(pstmt!=null) pstmt.close();
+		
+		return cnt;
 	}
 
 	@Override
 	public List<MemberVO> getAllMember(Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		List<MemberVO> memList = null;
+		String sql = "select * from mymember";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+		
+		memList = new ArrayList<MemberVO>();
+		
+		while(rs.next()) {
+			// 1개의 레코드가 저장될 변수
+			MemberVO memVo = new MemberVO();
+			memVo.setMem_id(rs.getString("mem_id"));
+			memVo.setMem_name(rs.getString("mem_name"));
+			memVo.setMem_pass(rs.getString("mem_pass"));
+			memVo.setMem_tel(rs.getString("mem_tel"));
+			memVo.setMem_addr(rs.getString("mem_addr"));
+			
+			memList.add(memVo);
+		}
+		
+		if(rs!=null) rs.close();
+		if(pstmt!=null)pstmt.close();
+		
+		return memList;
 	}
 
 	@Override
@@ -62,6 +107,20 @@ public class MemberDaoImpl implements IMemberDao {
 		if(pstmt!=null) pstmt.close();
 		
 		return count;
+	}
+
+	@Override
+	public int updateMember2(Connection conn, String memId, String updateField, String updateData) throws SQLException {
+		String sql = "update mymember set " + updateField + " = ? where mem_id = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, updateData);
+		pstmt.setString(2, memId);
+		
+		int cnt = pstmt.executeUpdate();
+		
+		if(pstmt!=null) pstmt.close();
+		
+		return cnt;
 	}
 
 }

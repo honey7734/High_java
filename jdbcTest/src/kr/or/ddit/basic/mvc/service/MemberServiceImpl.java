@@ -35,26 +35,82 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public int deleteMember(String memId) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection conn = null;
+		int cnt = 0;
+		try {
+			conn = DBUtill3.getConnection();
+			cnt = dao.deleteMember(conn, memId);
+		} catch (SQLException e) {
+			cnt = 0;
+			e.printStackTrace();
+		} finally {
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		
+		return cnt;
 	}
 
 	@Override
 	public int updateMember(MemberVO memVo) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection conn = null;
+		int cnt = 0;
+		try {
+			conn = DBUtill3.getConnection();
+			cnt = dao.updateMember(conn, memVo);
+		} catch (SQLException e) {
+			cnt = 0;
+			e.printStackTrace();
+		} finally {
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		
+		return cnt;
 	}
 
 	@Override
 	public List<MemberVO> getAllMember() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = null;
+		List<MemberVO> memVo = null;
+		
+		try {
+			conn = DBUtill3.getConnection();
+			memVo = dao.getAllMember(conn);
+		} catch (SQLException e) {
+			memVo = null;
+			e.printStackTrace();
+		} finally {
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		
+		return memVo;
 	}
 
 	@Override
 	public int getMemberCount(String memId) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection conn = null;
+		int count = 0;
+		try {
+			conn = DBUtill3.getConnection();
+			count = dao.getMemberCount(conn, memId);
+		} catch (SQLException e) {
+			count = 0;
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	@Override
+	public int updateMember2(String memId, String updateField, String updateData) {
+		Connection conn = null;
+		int cnt = 0;
+		try {
+			conn = DBUtill3.getConnection();
+			cnt = dao.updateMember2(conn, memId, updateField, updateData);
+		} catch (SQLException e) {
+			cnt = 0;
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 
 }

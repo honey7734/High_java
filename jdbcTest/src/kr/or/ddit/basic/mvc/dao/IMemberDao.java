@@ -63,4 +63,16 @@ public interface IMemberDao {
 	 */
 	public int getMemberCount(Connection conn, String memId) throws SQLException;
 	
+	/**
+	 * 회원ID와 해당 ID의 변경할 정보Field와 Data를 입력받아
+	 * DB에 update하는 메서드
+	 * @param conn Connection객체
+	 * @param memId update할 회원ID
+	 * @param updateField update할 정보의 Field
+	 * @param updateData update할 정보의 Data
+	 * @return 성공 : 1, 실패 : 0
+	 * @throws SQLException
+	 */
+	public int updateMember2(Connection conn, String memId, String updateField, String updateData) throws SQLException;
+	
 }
