@@ -26,6 +26,8 @@ public class MemberServiceImpl implements IMemberService {
 		} catch (SQLException e) {
 			cnt = 0;
 			e.printStackTrace();
+		} finally {
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
 		}
 		
 		return cnt;
