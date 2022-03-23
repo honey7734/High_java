@@ -6,10 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import kr.or.ddit.basic.mvc.vo.MemberVO;
 
 public class MemberDaoImpl implements IMemberDao {
+	
+	private static MemberDaoImpl memDao;
+	
+	private MemberDaoImpl() {}
+	
+	public static MemberDaoImpl getInstance() {
+		if(memDao == null) memDao = new MemberDaoImpl();
+		
+		return memDao;
+	}
 
 	@Override
 	public int insertMember(Connection conn, MemberVO memVo) throws SQLException {
