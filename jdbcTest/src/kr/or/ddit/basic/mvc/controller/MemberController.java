@@ -1,6 +1,8 @@
 package kr.or.ddit.basic.mvc.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import kr.or.ddit.basic.mvc.service.IMemberService;
@@ -91,7 +93,14 @@ public class MemberController {
 		scan.nextLine();	//버퍼 비우기
 		String updateData = scan.nextLine();
 		
-		int cnt = service.updateMember2(id, updateField, updateData);
+		// key값 정보 ==> 회원ID(memid), 수정할컬럼명(field), 수정할데이터(data)
+		Map<String, String> paramMap = new HashMap<String, String>();
+		
+		paramMap.put("memid", id);			// 회원ID
+		paramMap.put("field", updateField);	// 수정할 컬럼명
+		paramMap.put("data", updateData);	// 수정할 데이터
+		
+		int cnt = service.updateMember2(paramMap);
 		
 		if(cnt > 0) {
 			System.out.println("회원정보 수정 성공");

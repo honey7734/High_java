@@ -1,6 +1,7 @@
 package kr.or.ddit.basic.mvc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.ddit.basic.mvc.vo.MemberVO;
 /**
@@ -48,13 +49,11 @@ public interface IMemberService {
 	public int getMemberCount(String memId);
 	
 	/**
-	 * 회원ID와 해당 회원의 데이터를 변경하기 위한 데이터를 입력받아
-	 * DB에 변경할 수 있도록 하는 메서드 
-	 * @param memId 변경할 회원 ID
-	 * @param updateField 변경할 데이터 필드
-	 * @param updateData 변경할 데이터
-	 * @return 성공 : 1, 실패 : 0
+	 * Map의 정보를 이용하여 회원정보 중 원하는 컬럼을 수정하는 메서드
+	 * 		key값 정보 ==> 회원ID(memid), 수정할컬럼명(field), 수정할데이터(data)
+	 * @param paramMap 수정할 회원ID, 수정할 컬럼명, 수정할 데이터가 저장된 Map객체
+	 * @return 작업성공 : 1, 작업실패 : 0
 	 */
-	public int updateMember2(String memId, String updateField, String updateData);
+	public int updateMember2(Map<String, String> paramMap);
 	
 }
