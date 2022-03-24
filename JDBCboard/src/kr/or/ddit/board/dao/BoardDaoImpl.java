@@ -101,19 +101,16 @@ public class BoardDaoImpl implements IBoardDao {
 	@Override
 	public List<BoardVO> getSearchBoardList(Connection conn, String jBoardTitle) throws SQLException {
 		List<BoardVO> boardList = null;
-		String sql = "select board_no"
-					   + ",  board_title"
-					   + ",  board_writer\"\r\n"
-					   + ",  to_char(board_date, 'YYYY-MM-DD') as board_date"
-					   + ",  board_cnt"
-					   + ",  board_content"
-					+ "	from jdbc_board"
-				+ "	order by board_no desc"
-					+ "where board_title like '%' || ? || '%' ";
+		String sql = "select board_no, board_title, board_writer, to_char(board_date, 'YYYY-MM-DD') board_date, "
+					     + " board_cnt, board_content "
+					     + " from jdbc_board"
+					     + " where board_title like '%' || ? || '%' "
+					     + " order by board_no desc";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, jBoardTitle);
 		
 		ResultSet rs = pstmt.executeQuery();
+		
 		boardList = new ArrayList<BoardVO>();
 		while(rs.next()) {
 			BoardVO boardVo = new BoardVO();
@@ -127,6 +124,7 @@ public class BoardDaoImpl implements IBoardDao {
 			boardList.add(boardVo);
 		}
 		
+		
 		if(rs!=null) rs.close();
 		if(pstmt!=null)pstmt.close();
 		
@@ -139,7 +137,7 @@ public class BoardDaoImpl implements IBoardDao {
 		String sql = "select board_no"
 					   + ",  board_title"
 					   + ",  board_writer"
-					   + ",  to_char(board_date, 'YYYY-MM-DD') as board_date"
+					   + ",  to_char(board_date, 'YYYY-MM-DD') board_date"
 					   + ",  board_cnt"
 					   + ",  board_content"
 				    + " from jdbc_board "

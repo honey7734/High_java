@@ -51,6 +51,7 @@ public class BoardController {
 	}
 
 	private String searchBoard() {
+		scan.nextLine();
 		System.out.println();
 		System.out.println("검색작업");
 		System.out.print("- 검색할 제목 입력 : ");
@@ -169,7 +170,7 @@ public class BoardController {
 		System.out.println("-------------------------------------------------------------");
 		System.out.println("No	        제 목            작성자 	조회수 ");
 		System.out.println("-------------------------------------------------------------");
-		if(list.size() == 0 || list == null) {
+		if(list == null || list.size() == 0) {
 			System.out.println("출력할 게시글이 하나도 없습니다...");
 		}else {
 			for(BoardVO vo : list) {
