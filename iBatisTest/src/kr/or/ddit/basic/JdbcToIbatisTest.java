@@ -11,6 +11,7 @@ import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
+import kr.or.ddit.util.SqlMapClientFactory;
 import kr.or.ddit.vo.LprodVO;
 
 /*
@@ -27,15 +28,18 @@ public class JdbcToIbatisTest {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		
+		SqlMapClient smc = null;
 		try {
-			Charset charset = Charset.forName("utf-8");
-			Resources.setCharset(charset);
+//			Charset charset = Charset.forName("utf-8");
+//			Resources.setCharset(charset);
+//			
+//			Reader rd = Resources.getResourceAsReader("kr/or/ddit/ibatis/config/sqlMapConfig.xml");
+//			smc = SqlMapClientBuilder.buildSqlMapClient(rd);
+//			
+//			rd.close();	
 			
-			Reader rd = Resources.getResourceAsReader("kr/or/ddit/ibatis/config/sqlMapConfig.xml");
-			SqlMapClient smc = SqlMapClientBuilder.buildSqlMapClient(rd);
+			smc = SqlMapClientFactory.getClientFactory();
 			
-			rd.close();	// 스트림 닫기
 			
 			int max = (int) smc.queryForObject("lprod2.maxId");
 			
@@ -76,9 +80,6 @@ public class JdbcToIbatisTest {
 			System.out.println();
 		} catch (SQLException e) {
 			// TODO: handle exception
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 
