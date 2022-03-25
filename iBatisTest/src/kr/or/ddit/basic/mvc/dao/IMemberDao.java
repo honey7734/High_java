@@ -64,7 +64,7 @@ public interface IMemberDao {
 	 * @return 검색된 회원ID의 개수
 	 * @throws SQLException
 	 */
-	public int getMemberCount(Connection conn, String memId) throws SQLException;
+	public int getMemberCount(SqlMapClient smc, String memId) throws SQLException;
 	
 	/**
 	 * Map의 정보를 이용하여 회원정보 중 원하는 컬럼을 수정하는 메서드
@@ -74,6 +74,6 @@ public interface IMemberDao {
 	 * @return 작업성공 : 1, 작업실패 : 0
 	 * @throws SQLException
 	 */
-	public int updateMember2(Connection conn, Map<String, String> paramMap) throws SQLException;
+	public int updateMember2(SqlMapClient smc, Map<String, String> paramMap) throws SQLException;
 	
 }

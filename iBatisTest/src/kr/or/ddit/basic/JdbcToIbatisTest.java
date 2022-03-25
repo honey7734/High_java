@@ -1,15 +1,10 @@
 package kr.or.ddit.basic;
 
 
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
 import kr.or.ddit.util.SqlMapClientFactory;
 import kr.or.ddit.vo.LprodVO;
