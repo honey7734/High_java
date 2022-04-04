@@ -8,22 +8,31 @@ import java.util.Scanner;
 import kr.or.ddit.basic.mvc.service.IMemberService;
 import kr.or.ddit.basic.mvc.service.MemberServiceImpl;
 import kr.or.ddit.basic.mvc.vo.MemberVO;
+import kr.or.ddit.util.CryptoUtill;
 
+/*
+ * 
+ * 1. 회원 정보 중에서 회원ID는 양방향 암호화로 변환하여 DB에 저장하고 화면에 보여줄 때는 원래의 데이터로 복원하여 보여준다.
+ * 2. 비밀번호는 단방향 알고리즘으로 암호화하여 DB에 저장한다.
+ * 
+ */
 public class MemberController {
 	private Scanner scan = new Scanner(System.in);
 	private IMemberService service;
+	
+	private static String KEY = "a1b2c3d4e5f6g7h8";
 	
 	//생성자
 	public MemberController() {
 		service = MemberServiceImpl.getInstance();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new MemberController().start();
 	}
 	
 	
-	private void start() {
+	private void start() throws Exception {
 		while(true) {
 			int input = displayMenu();
 			switch (input) {
@@ -51,11 +60,14 @@ public class MemberController {
 
 	
 
-	private void updateMember2() {
+	private void updateMember2() throws Exception {
 		System.out.println("자료를 수정할 아이디를 입력해주세요");
 		String id  = scan.next();
 		
-		int count = service.getMemberCount(id);
+	
+		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		
+		int count = service.getMemberCount(encrptedStr);
 		if(count == 0) {
 			System.out.println(id + "은(는) 없는 회원ID입니다.");
 			return;
@@ -96,8 +108,14 @@ public class MemberController {
 		// key값 정보 ==> 회원ID(memid), 수정할컬럼명(field), 수정할데이터(data)
 		Map<String, String> paramMap = new HashMap<String, String>();
 		
-		paramMap.put("memid", id);			// 회원ID
+		paramMap.put("memid", encrptedStr);			// 회원ID
 		paramMap.put("field", updateField);	// 수정할 컬럼명
+		
+		//비밀번호는 단방향 암호화를 거친다
+		if(num == 1) {
+			updateData = CryptoUtill.sha512(updateData);
+		}
+		
 		paramMap.put("data", updateData);	// 수정할 데이터
 		
 		int cnt = service.updateMember2(paramMap);
@@ -111,7 +129,7 @@ public class MemberController {
 		
 	}
 
-	private void printAllMember() {
+	private void printAllMember() throws Exception {
 		
 		List<MemberVO> memList = service.getAllMember();
 		
@@ -123,20 +141,28 @@ public class MemberController {
 			System.out.println(" 출력한 자료가 하나도 없습니다." );
 		}else {
 			for(MemberVO memVo : memList) {
-				System.out.println(memVo.getMem_id() + "\t" + memVo.getMem_pass() + "\t" + memVo.getMem_name() + "\t" +
+				String mem_id = memVo.getMem_id();
+				
+				//암호화된 아이디 복호화 하기
+				String decryptedStr = CryptoUtill.decryptoAES256(mem_id, KEY);
+				
+				System.out.println(decryptedStr + "\t" + memVo.getMem_pass() + "\t" + memVo.getMem_name() + "\t" +
 						memVo.getMem_tel() + "\t" + memVo.getMem_addr());
 			}
  		}
 		
 	}
 
-	private void deleteMember() {
+	private void deleteMember() throws Exception {
 		System.out.println();
 		System.out.println("삭제할 회원정보를 입력하세요");
 		System.out.println("삭제할 회원ID >> ");
 		String id = scan.next();
 		
-		int cnt = service.deleteMember(id);
+		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		
+		
+		int cnt = service.deleteMember(encrptedStr);
 		
 		if(cnt > 0) {
 			System.out.println("회원 삭제 성공");
@@ -146,11 +172,13 @@ public class MemberController {
 		
 	}
 
-	private void updateMember() {
+	private void updateMember() throws Exception {
 		System.out.println("자료를 수정할 아이디를 입력해주세요");
 		String id  = scan.next();
 		
-		int count = service.getMemberCount(id);
+		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		
+		int count = service.getMemberCount(encrptedStr);
 		if(count == 0) {
 			System.out.println(id + "은(는) 없는 회원ID입니다.");
 			return;
@@ -160,6 +188,7 @@ public class MemberController {
 	
 		System.out.print("새로운 비밀번호 >> ");
 		String pw = scan.next();
+		pw = CryptoUtill.sha512(pw);
 		
 		System.out.print("새로운 이름 >> ");
 		String name = scan.next();
@@ -172,7 +201,7 @@ public class MemberController {
 		String addr = scan.nextLine();
 		
 		MemberVO memVo = new MemberVO();
-		memVo.setMem_id(id);
+		memVo.setMem_id(encrptedStr);
 		memVo.setMem_pass(pw);
 		memVo.setMem_name(name);
 		memVo.setMem_tel(tel);
@@ -188,21 +217,24 @@ public class MemberController {
 	}
 
 	//회원 정보를 추가(입력)하는 메서드
-	private void insertMember() {
+	private void insertMember() throws Exception {
 		System.out.println();
 		System.out.println("추가할 회원 정보를 입력하세요");
 		
 		int count = 0;	// 입력한 회원ID의 개수가 저장될 변수
 		String memId = "";	// 회원ID가 저장될 변수
-		
 		do {
 			System.out.print("회원ID >> ");
 			memId = scan.next();
 			
+			
+			//ID값 양방향 방식으로 암호화 하기
+			memId = CryptoUtill.encryptoAES256(memId, KEY);
+			
 			// 회원ID를 매개변수로 받아서 해당 회원ID의 개수를 반환하는 메서드
 			count = service.getMemberCount(memId);
 			if(count>0) {
-				System.out.println(memId + "는 이미 등록된 ID입니다.");
+				System.out.println("이미 등록된 ID입니다.");
 				System.out.println("다른 회원ID를 입력하세요");
 			}
 			
@@ -210,6 +242,10 @@ public class MemberController {
 		
 		System.out.print("비밀번호 >>");
 		String pw = scan.next();
+		
+		//단방향 암호화 방식으로 비밀번호 암호화
+		pw = CryptoUtill.sha512(pw);
+		
 		
 		System.out.print("회원이름 >>");
 		String name = scan.next();
