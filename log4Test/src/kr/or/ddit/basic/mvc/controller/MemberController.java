@@ -65,11 +65,12 @@ public class MemberController {
 		String id  = scan.next();
 		
 	
-		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		id = CryptoUtill.encryptoAES256(id, KEY);
 		
-		int count = service.getMemberCount(encrptedStr);
+		int count = service.getMemberCount(id);
 		if(count == 0) {
-			System.out.println(id + "은(는) 없는 회원ID입니다.");
+			System.out.println("없는 회원ID입니다.");
+			System.out.println("수정 작업을 마칩니다.");
 			return;
 		}
 		
@@ -105,16 +106,17 @@ public class MemberController {
 		scan.nextLine();	//버퍼 비우기
 		String updateData = scan.nextLine();
 		
+		//비밀번호는 단방향 암호화를 거친다
+		if(updateField.equals("mem_pass")) {
+			updateData = CryptoUtill.sha512(updateData);
+		}
+		
+		
 		// key값 정보 ==> 회원ID(memid), 수정할컬럼명(field), 수정할데이터(data)
 		Map<String, String> paramMap = new HashMap<String, String>();
 		
-		paramMap.put("memid", encrptedStr);			// 회원ID
+		paramMap.put("memid", id);			// 회원ID
 		paramMap.put("field", updateField);	// 수정할 컬럼명
-		
-		//비밀번호는 단방향 암호화를 거친다
-		if(num == 1) {
-			updateData = CryptoUtill.sha512(updateData);
-		}
 		
 		paramMap.put("data", updateData);	// 수정할 데이터
 		
@@ -159,10 +161,10 @@ public class MemberController {
 		System.out.println("삭제할 회원ID >> ");
 		String id = scan.next();
 		
-		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		id = CryptoUtill.encryptoAES256(id, KEY);
 		
 		
-		int cnt = service.deleteMember(encrptedStr);
+		int cnt = service.deleteMember(id);
 		
 		if(cnt > 0) {
 			System.out.println("회원 삭제 성공");
@@ -176,11 +178,12 @@ public class MemberController {
 		System.out.println("자료를 수정할 아이디를 입력해주세요");
 		String id  = scan.next();
 		
-		String encrptedStr = CryptoUtill.encryptoAES256(id, KEY);
+		id = CryptoUtill.encryptoAES256(id, KEY);
 		
-		int count = service.getMemberCount(encrptedStr);
+		int count = service.getMemberCount(id);
 		if(count == 0) {
-			System.out.println(id + "은(는) 없는 회원ID입니다.");
+			System.out.println("없는 회원ID입니다.");
+			System.out.println("수정 작업을 마칩니다.");
 			return;
 		}
 		
@@ -201,7 +204,7 @@ public class MemberController {
 		String addr = scan.nextLine();
 		
 		MemberVO memVo = new MemberVO();
-		memVo.setMem_id(encrptedStr);
+		memVo.setMem_id(id);
 		memVo.setMem_pass(pw);
 		memVo.setMem_name(name);
 		memVo.setMem_tel(tel);
