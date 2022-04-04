@@ -69,7 +69,7 @@ public class MemberController {
 		
 		int count = service.getMemberCount(id);
 		if(count == 0) {
-			System.out.println("없는 회원ID입니다.");
+			System.out.println(CryptoUtill.decryptoAES256(id, KEY) + "은(는) 없는 회원ID입니다.");
 			System.out.println("수정 작업을 마칩니다.");
 			return;
 		}
@@ -182,7 +182,7 @@ public class MemberController {
 		
 		int count = service.getMemberCount(id);
 		if(count == 0) {
-			System.out.println("없는 회원ID입니다.");
+			System.out.println(CryptoUtill.decryptoAES256(id, KEY) + "은(는) 없는 회원ID입니다.");
 			System.out.println("수정 작업을 마칩니다.");
 			return;
 		}
