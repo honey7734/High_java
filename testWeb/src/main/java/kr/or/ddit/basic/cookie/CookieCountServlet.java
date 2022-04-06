@@ -21,29 +21,32 @@ public class CookieCountServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
+		int count = 0; // 현재 count값이 저장될 변수
+		
+		// 쿠키에 저장된 count값을 가져온다.
 		Cookie[] cookieArr = request.getCookies();
-		Cookie countCookie = null;
-		
-		for(Cookie cookie : cookieArr) {
-			if("count".equals(cookie.getName())) {
-				countCookie = cookie;
-				int count = Integer.parseInt(countCookie.getValue()) + 1;
-				countCookie.setValue(String.valueOf(count));
-				response.addCookie(countCookie);
+		if(cookieArr != null) {
+			for(Cookie cookie : cookieArr) {
+				String cookieName = cookie.getName();
+				if("count".equals(cookieName)) {
+					//쿠키에 저장된 현재 count값 찾기
+					count = Integer.parseInt(cookie.getValue());
+				}
 			}
+			
 		}
+		count++; //현재 count값을 증가시킨다
 		
-		if(countCookie == null) {
-			countCookie = new Cookie("count", String.valueOf(1));
-			response.addCookie(countCookie);
-		}
+		// 증가된 count값을 쿠키에 저장한다.
+		Cookie countCookie = new Cookie("count", String.valueOf(count));
+		response.addCookie(countCookie);
 		
 		out.println("<html><head><meta charset='utf-8'>");
 		out.println("<title>쿠키저장하기</title></head>");
 		out.println("<body>");
-		out.println("<h3>어서오세요.당신은" + countCookie.getValue() + "번째 방문입니다</h3>");
+		out.println("<h3>어서오세요.당신은" + count + "번째 방문입니다</h3>");
 		out.println("<br><br>");
-		out.println("<a href='"+ request.getContextPath() +"/cookieCountServlet.do'>카운트증가하기</a>");
+		out.println("<a href='"+ request.getContextPath() +"/cookieCountServlet.do'>카운트 증가하기</a>");
 		out.println("<a href='" + request.getContextPath() + "/basic/02/cookieTest02.jsp'>시작문서로 가기</a>");
 		out.println("</body></html>");
 		

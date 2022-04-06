@@ -21,18 +21,19 @@ public class CookieCountDelServlet extends HttpServlet {
 		
 		Cookie[] cookieArr = request.getCookies();
 		
-		
-		
 		out.println("<html>");
 		out.println("<head><meta charset='utf-8'>");
-		out.println("<title>쿠키값 삭제</title></head>");
+		out.println("<title>쿠키 Count 삭제</title></head>");
 		out.println("<body>");
-		for(Cookie cookie : cookieArr) {
-			String name = cookie.getName();
-			if(name.equals("count")) {
-				cookie.setMaxAge(0);
-				response.addCookie(cookie);
-				out.println("<h3>count가 초기화 되었습니다.<h3>");
+		if(cookieArr != null) {
+			for(Cookie cookie : cookieArr) {
+				String name = cookie.getName();
+				
+				if(name.equals("count")) {
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+					out.println("<h3>count가 초기화 되었습니다.<h3>");
+				}
 			}
 		}
 		out.println("<a href='"+ request.getContextPath() +"/basic/02/cookieTest02.jsp'>시작문서로 이동하기</a>");
