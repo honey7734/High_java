@@ -13,16 +13,20 @@ $(function() {
 			url : '<%=request.getContextPath() %>/lprodController.do',
 			type : 'post',
 			success : function(data) {
-				var str = "";
+				var htmlCode = "<table border='1'>";
+				htmlCode += "<tr><td>LPROD_ID</td>"
+				htmlCode += "<td>LPROD_GU</td>"
+				htmlCode += "<td>LPROD_NM</td></tr>"
 				
 				$.each(data, function(i,v) {
-					str += i +"번째 자료<br>"
-					str += "id : " + v.lprod_id + "<br>"
-					str += "gu : " + v.lprod_gu + "<br>"
-					str += "nm : " + v.lprod_nm + "<hr>"
+					htmlCode += "<tr><td>" + v.lprod_id + "</td>" 
+					htmlCode += "<td>" + v.lprod_gu + "</td>" 
+					htmlCode += "<td>" + v.lprod_nm + "</td></tr>" 
 				})
 				
-				$("#result").html(str);
+				htmlCode += "</table>"
+				
+				$("#result").html(htmlCode);
 			},
 			error : function() {
 				alert('오류');
@@ -30,6 +34,11 @@ $(function() {
 			dataType : 'json'
 		})
 	})
+	
+	$('#lprodBtn2').on('click', function() {
+		location.href = "<%=request.getContextPath()%>/lprodController2.do";
+	})
+	
 })
 </script>
 </head>
@@ -38,7 +47,8 @@ $(function() {
 	DB의 LPROD테이블의 전체 데이터를 가져와 화면에 출력하시오
 -->
 <form>
-	<input type="button" id="lprodBtn" value="Lprod자료 가져오기">
+	<input type="button" id="lprodBtn" value="Lprod자료 가져오기(Ajax)">
+	<input type="button" id="lprodBtn2" value="Lprod자료 가져오기(Non Ajax)">
 </form>
 <h3>Lprod 자료 목록</h3>
 <div id="result"></div>
