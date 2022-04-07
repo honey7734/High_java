@@ -54,8 +54,8 @@ public class CookieReadTest extends HttpServlet {
 					out.println("<hr>");
 				}
 			}
-			out.println("<hr>");
 			out.println("<a href='"+ request.getContextPath() +"/basic/02/cookieTest.jsp'>시작문서로 이동하기</a>");
+			out.println("<hr>");
 			out.println("</body></html>");
 			
 	}
