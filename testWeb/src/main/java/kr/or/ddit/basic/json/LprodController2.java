@@ -33,7 +33,7 @@ public class LprodController2 extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		// View 페이지로 forwarding한다.
-		RequestDispatcher rd = request.getRequestDispatcher("/basic/json/lprodList.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/lprod/lprodList.jsp");
 		
 		rd.forward(request, response);
 	}
