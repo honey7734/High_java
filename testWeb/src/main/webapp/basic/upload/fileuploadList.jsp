@@ -40,7 +40,7 @@ for(FileInfo finfo : fileList){
 		<td><%=finfo.getFileName() %></td>
 		<td><%=finfo.getFileSize() %></td>
 		<td><%=finfo.getStatus() %></td>
-		<td>downLoad</td>
+		<td><a href="<%=request.getContextPath()%>/fileDownload.do?filename=<%=finfo.getFileName()%>">download</a></td>
 	</tr>
 <%
 }
